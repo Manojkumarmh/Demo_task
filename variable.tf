@@ -2,7 +2,7 @@ variable "aws_region" {
   default = "us-east-1"
 }
 
-variable "cluster_name" {
+variable "ecs-cluster" {
   default = "my-ecs-cluster"
 }
 
@@ -14,7 +14,7 @@ variable "subnet_cidr" {
   default = "10.0.1.0/24"
 }
 
-variable "security_group_name" {
+variable "ecs_sg" {
   default = "ecs-sg"
 }
 
