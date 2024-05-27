@@ -110,13 +110,5 @@ resource "aws_ecs_service" "ecs_service" {
     subnets         = [aws_subnet.subnet.id]
     security_groups = [aws_security_group.sgroup.id]
     assign_public_ip = true
-
-    # Add additional configuration based on the network mode of the ECS task definition
-    # If the task definition's network mode is "awsvpc", specify the "awsvpc_configuration" block
-    awsvpc_configuration {
-      subnets         = [aws_subnet.subnet.id]
-      security_groups = [aws_security_group.sgroup.id]
-      assign_public_ip = true
-    }
   }
 }
