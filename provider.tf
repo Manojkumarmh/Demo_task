@@ -1,8 +1,14 @@
-resource "aws_instance" "public_instance" {
- ami           = var.ami
- instance_type = var.instance_type
+terraform {
+  required_providers {
+    aws = {
+      source  = "hashicorp/aws"
+      version = "~> 4.0"
+    }
+  }
+}
 
- tags = {
-   Name = var.name_tag,
- }
+provider "aws" {
+  access_key = var.aws_access_key
+  secret_key = var.aws_secret_key
+  region     = var.aws_region
 }
