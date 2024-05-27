@@ -107,10 +107,8 @@ resource "aws_ecs_service" "ecs_service" {
   launch_type = "EC2"
 
   network_configuration {
-    awsvpc_configuration {
-      subnets         = [aws_subnet.subnet.id]
-      security_groups = [aws_security_group.sgroup.id]
-      assign_public_ip = true
-    }
+    subnets         = [aws_subnet.subnet.id]
+    security_groups = [aws_security_group.sgroup.id]
+    assign_public_ip = true
   }
 }
