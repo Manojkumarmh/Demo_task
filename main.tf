@@ -80,7 +80,7 @@ resource "aws_security_group" "sgroup" {
 
 # ECS Cluster
 resource "aws_ecs_cluster" "ecs_cluster" {
-  name = var.ecs-cluster
+  name = var.ecs_cluster
 }
 
 # ECS Task Definition
@@ -100,7 +100,7 @@ resource "aws_ecs_task_definition" "ecs_task_def" {
 # ECS Service
 resource "aws_ecs_service" "ecs_service" {
   name            = "example"
-  cluster         = aws_ecs_cluster.ecs_cluste.id
+  cluster         = aws_ecs_cluster.ecs_cluster.id
   task_definition = aws_ecs_task_definition.ecs_task_def.arn
   desired_count   = 1
 
