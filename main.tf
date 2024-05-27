@@ -99,7 +99,7 @@ resource "aws_ecs_task_definition" "ecs_task_def" {
 
 # ECS Service
 resource "aws_ecs_service" "ecs_service" {
-  name            = "example"
+  name            = "ecs_service"
   cluster         = aws_ecs_cluster.ecs_cluster.id
   task_definition = aws_ecs_task_definition.ecs_task_def.arn
   desired_count   = 1
@@ -110,5 +110,11 @@ resource "aws_ecs_service" "ecs_service" {
     subnets         = [aws_subnet.subnet.id]
     security_groups = [aws_security_group.sgroup.id]
     assign_public_ip = true
+
+    awsvpc_configuration {
+      subnets         = [aws_subnet.subnet.id]
+      security_groups = [aws_security_group.sgroup.id]
+      assign_public_ip = true
+    }    
   }
 }
