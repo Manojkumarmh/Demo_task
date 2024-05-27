@@ -2,7 +2,7 @@ variable "aws_region" {
   default = "us-east-1"
 }
 
-variable "ecs-cluster" {
+variable "ecs_cluster" {
   default = "my-ecs-cluster"
 }
 
