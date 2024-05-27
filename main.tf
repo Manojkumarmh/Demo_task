@@ -1,56 +1,56 @@
 # VPC
-resource "aws_vpc" "example" {
+resource "aws_vpc" "vpc" {
   cidr_block = var.vpc_cidr
 
   tags = {
-    Name = "example-vpc"
+    Name = "ecs_vpc"
   }
 }
 
 # Subnet
-resource "aws_subnet" "example" {
-  vpc_id                  = aws_vpc.example.id
+resource "aws_subnet" "subnet" {
+  vpc_id                  = aws_vpc.vpc.id
   cidr_block              = var.subnet_cidr
   map_public_ip_on_launch = true
 
   tags = {
-    Name = "example-subnet"
+    Name = "subnet"
   }
 }
 
 # Internet Gateway
-resource "aws_internet_gateway" "example" {
-  vpc_id = aws_vpc.example.id
+resource "aws_internet_gateway" "igw" {
+  vpc_id = aws_vpc.vpc.id
 
   tags = {
-    Name = "example-igw"
+    Name = "igw"
   }
 }
 
 # Route Table
-resource "aws_route_table" "example" {
-  vpc_id = aws_vpc.example.id
+resource "aws_route_table" "rtable" {
+  vpc_id = aws_vpc.vpc.id
 
   route {
     cidr_block = "0.0.0.0/0"
-    gateway_id = aws_internet_gateway.example.id
+    gateway_id = aws_internet_gateway.igw.id
   }
 
   tags = {
-    Name = "example-route-table"
+    Name = "route_table"
   }
 }
 
 # Route Table Association
-resource "aws_route_table_association" "example" {
-  subnet_id      = aws_subnet.example.id
-  route_table_id = aws_route_table.example.id
+resource "aws_route_table_association" "rtasso" {
+  subnet_id      = aws_subnet.subnet.id
+  route_table_id = aws_route_table.rtable.id
 }
 
 # Security Group
-resource "aws_security_group" "example" {
-  vpc_id = aws_vpc.example.id
-  name   = var.security_group_name
+resource "aws_security_group" "sgroup" {
+  vpc_id = aws_vpc.vpc.id
+  name   = var.ecs_sg
 
   ingress {
     from_port   = 80
@@ -74,17 +74,17 @@ resource "aws_security_group" "example" {
   }
 
   tags = {
-    Name = "example-sg"
+    Name = "sgroup"
   }
 }
 
 # ECS Cluster
-resource "aws_ecs_cluster" "example" {
-  name = var.cluster_name
+resource "aws_ecs_cluster" "ecs_cluster" {
+  name = var.ecs-cluster
 }
 
 # ECS Task Definition
-resource "aws_ecs_task_definition" "example" {
+resource "aws_ecs_task_definition" "ecs_task_def" {
   family                   = "service"
   container_definitions    = jsonencode([
     {
@@ -98,17 +98,17 @@ resource "aws_ecs_task_definition" "example" {
 }
 
 # ECS Service
-resource "aws_ecs_service" "example" {
+resource "aws_ecs_service" "ecs_service" {
   name            = "example"
-  cluster         = aws_ecs_cluster.example.id
-  task_definition = aws_ecs_task_definition.example.arn
+  cluster         = aws_ecs_cluster.ecs_cluste.id
+  task_definition = aws_ecs_task_definition.ecs_task_def.arn
   desired_count   = 1
 
   launch_type = "EC2"
 
   network_configuration {
-    subnets         = [aws_subnet.example.id]
-    security_groups = [aws_security_group.example.id]
+    subnets         = [aws_subnet.subnet.id]
+    security_groups = [aws_security_group.sgroup.id]
     assign_public_ip = true
   }
 }
