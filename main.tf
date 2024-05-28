@@ -87,7 +87,7 @@ resource "aws_ecs_cluster" "ecs_cluster" {
 resource "aws_ecs_task_definition" "ecs_task_def" {
   family                   = "service"
   network_mode             = "awsvpc"
-  requires_compatibilities = ["EC2"]
+  requires_compatibilities = ["FARGATE"]
   container_definitions    = jsonencode([
     {
       name      = "app",
@@ -110,6 +110,7 @@ resource "aws_ecs_service" "ecs_service" {
   network_configuration {
     subnets         = [aws_subnet.subnet.id]
     security_groups = [aws_security_group.sgroup.id]
+    assign_public_ip = true
     # Removed assign_public_ip
   }
 }
