@@ -101,9 +101,8 @@ resource "aws_ecs_task_definition" "ecs_task_def" {
 resource "aws_ecs_service" "ecs_service" {
   name            = "example"
   cluster         = aws_ecs_cluster.ecs_cluster.id
-  task_definition = aws_ecs_task_definition.ecs_task_def.arn
+  task_definition = aws_ecs_task_definition.ecs_task_def.id
   desired_count   = 1
-
   launch_type = "EC2"
 
   network_configuration {
