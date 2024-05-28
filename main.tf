@@ -83,22 +83,23 @@ resource "aws_ecs_cluster" "ecs_cluster" {
   name = var.ecs_cluster
 }
 
-# ECS Task Definition
 resource "aws_ecs_task_definition" "ecs_task_def" {
   family                   = "service"
   network_mode             = "awsvpc"
   requires_compatibilities = ["FARGATE"]
+  cpu                      = "256"  # Task-level CPU value
+  memory                   = "512"  # Task-level memory value
+
   container_definitions    = jsonencode([
     {
       name      = "app",
       image     = "nginx:latest",
       essential = true,
-      memory    = 512,
-      cpu       = 256,
+      memory    = 512,  # This can be removed or kept as additional container memory
+      cpu       = 256,  # This can be removed or kept as additional container CPU
     }
   ])
 }
-
 # ECS Service
 resource "aws_ecs_service" "ecs_service" {
   name            = "example"
